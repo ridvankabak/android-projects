@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "246345076693",
+    "firebase_url": "https://firestorelogin-48c37.firebaseio.com",
+    "project_id": "firestorelogin-48c37",
+    "storage_bucket": "firestorelogin-48c37.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246345076693:android:5667411cf136ef8467775c",
+        "android_client_info": {
+          "package_name": "com.example.firestorelogin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246345076693-t8p010os8n5jka39vd55kbj37dhencil.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firestorelogin",
+            "certificate_hash": "7b4b3655193e160465fe3128d59bbd44cf80b4f8"
+          }
+        },
+        {
+          "client_id": "246345076693-7a4136taod9459bpnnhh1thdrpqq5gv3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-Q6o2d097Ebao1vmQH3QRMR5zxb9kDvI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246345076693-7a4136taod9459bpnnhh1thdrpqq5gv3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
