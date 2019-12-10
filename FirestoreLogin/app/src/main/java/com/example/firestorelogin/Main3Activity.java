@@ -12,9 +12,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,13 +30,13 @@ import java.util.Map;
 
 public class Main3Activity extends AppCompatActivity {
     private Button buttonLogout,buttonUptade,buttonLoad;
-    private EditText editTextUsername,editTextPassword,editTextEmail,editTextPhone;
-    private TextView textView;
+    private EditText editTextUsername,editTextOldPassword,editTextNewPassword,editTextEmail,editTextPhone;
     String userID;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
     private DocumentReference noteRef;
+    private FirebaseUser userr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,31 +46,28 @@ public class Main3Activity extends AppCompatActivity {
         buttonUptade = findViewById(R.id.buttonUptade);
         buttonLoad = findViewById(R.id.buttonLoad);
         editTextUsername = findViewById(R.id.editTextUsernameUptade);
-        editTextPassword = findViewById(R.id.editTextPasswordUpdate);
+        editTextOldPassword = findViewById(R.id.editTextOldPasswordUpdate);
+        editTextNewPassword = findViewById(R.id.editTextNewPasswordUptade);
         editTextEmail = findViewById(R.id.editTextEmailUptade);
         editTextPhone = findViewById(R.id.editTextPhoneUptade);
-        textView = findViewById(R.id.textView);
 
         userID=firebaseAuth.getCurrentUser().getUid();
         noteRef = db.document("users/"+userID);
 
         verileriCek();
 
-
-
         buttonUptade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String username = editTextUsername.getText().toString();
-                String password = editTextPassword.getText().toString();
                 String email = editTextEmail.getText().toString();
                 String phone = editTextPhone.getText().toString();
 
                 Map<String,Object> user = new HashMap<>();
 
                 user.put("username",username);
-                user.put("password",password);
-                user.put("email",email);
+                user.put("password",passwordChange());
+                user.put("email",emailChange());
                 user.put("phone",phone);
 
                 noteRef.set(user, SetOptions.merge());
@@ -98,8 +100,9 @@ public class Main3Activity extends AppCompatActivity {
                             String email = documentSnapshot.getString("email");
                             String phone = documentSnapshot.getString("phone");
 
+
                             editTextUsername.setText(username);
-                            editTextPassword.setText(password);
+                            editTextOldPassword.setText(password);
                             editTextEmail.setText(email);
                             editTextPhone.setText(phone);
                             Toast.makeText(Main3Activity.this, "Veriler geldi", Toast.LENGTH_SHORT).show();
@@ -123,8 +126,38 @@ public class Main3Activity extends AppCompatActivity {
 
 
     }
+    public String passwordChange(){
+        userr = FirebaseAuth.getInstance().getCurrentUser();
+        final String newPass = editTextNewPassword.getText().toString();
+        String oldPass = editTextOldPassword.getText().toString();
+        if(newPass.isEmpty()){
+            return oldPass;
+        }
+        userr.updatePassword(newPass).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(Main3Activity.this, "Kullanıcı şifresi güncelledi", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
 
+        return newPass;
+    }
+    public String emailChange(){
+        userr = FirebaseAuth.getInstance().getCurrentUser();
+        final String newEmail = editTextEmail.getText().toString();
+
+        userr.updateEmail(newEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(Main3Activity.this, "Email Güncellendi", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return newEmail;
+    }
     private void verileriCek() {
         noteRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -136,7 +169,7 @@ public class Main3Activity extends AppCompatActivity {
                     String phone = documentSnapshot.getString("phone");
 
                     editTextUsername.setText(username);
-                    editTextPassword.setText(password);
+                    editTextOldPassword.setText(password);
                     editTextEmail.setText(email);
                     editTextPhone.setText(phone);
 
