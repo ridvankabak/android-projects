@@ -3,4 +3,6 @@
     <color name="colorPrimary">#607d8b</color>
     <color name="colorPrimaryDark">#455a64</color>
     <color name="colorAccent">#4caf50</color>
+    <color name="darkmavi">#242F3E</color>
+    <color name="turuncu">#D59563</color>
 </resources>

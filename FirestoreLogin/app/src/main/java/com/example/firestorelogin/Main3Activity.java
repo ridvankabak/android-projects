@@ -37,6 +37,8 @@ public class Main3Activity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
     private DocumentReference noteRef;
     private FirebaseUser userr;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

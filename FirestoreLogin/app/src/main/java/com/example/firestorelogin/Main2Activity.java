@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,6 +32,9 @@ public class Main2Activity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     String userID;
 
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,11 @@ public class Main2Activity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
+
+        sp = getSharedPreferences("Giris Bilgi",MODE_PRIVATE);
+        editor = sp.edit();
+
+
 
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +89,10 @@ public class Main2Activity extends AppCompatActivity {
                             user.put("password",password);
                             user.put("email",email);
                             user.put("phone",phone);
+
+                            editor.putString("email",email);
+                            editor.putString("password",password);
+                            editor.commit();
 
                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
